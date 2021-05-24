@@ -3,9 +3,26 @@ gi.require_version('Gtk', '3.0')
 
 from gi.repository import Gtk, GdkPixbuf, Gdk
 
+class IdButton(Gtk.Button):
+    def __init__(self, id,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.id = id
+
+    def get_id(self):
+        return self.id
+
+
+class IdToggleButton(Gtk.ToggleButton):
+    def __init__(self, id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.id = id
+
+    def get_id(self):
+        return self.id
+
 
 class imageContainer(Gtk.Button):
-    def __init__(self, path, id, min_w, min_h, *args, **kwargs):
+    def __init__(self, path, min_w, min_h, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.id = id
         self.min_h = min_h
@@ -51,26 +68,10 @@ class imageContainer(Gtk.Button):
         context.paint()
 
     def switch_image(self, imagePath):
-        print("egg")
         self.path = imagePath
         self.pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.path)
         self.img_surface = Gdk.cairo_surface_create_from_pixbuf(self.pixbuf, 1, None)
-        self.set_size_request(self.min_w+1, self.min_h)
+        self.update()
 
-
-
-
-
-
-
-
-"""""    def switch_image(self, path):
-        pass
-
-        # self.path = path
-        # self.pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.path)
-        # self.img_surface = Gdk.cairo_surface_create_from_pixbuf(self.pixbuf, 1, None)
-
-
-
-"""
+    def update(self):
+        self.set_size_request(self.min_w + 1, self.min_h)
